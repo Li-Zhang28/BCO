@@ -1,1 +1,31 @@
+library(phyloseq)
+library(HMP2Data)
+library(brms)
+library(BhGLM)
+library(tidyverse)
+
+###########################################
+data("IBD16S_mtx")
+data("IBD16S_tax")
+data("IBD16S_samp")
+dim(IBD16S_mtx)
+
+mtx=as.data.frame(IBD16S_mtx)
+
+mtx$ID=IBD16S_tax[,5]
+mtx1=mtx %>% 
+  group_by(ID) %>% 
+  summarise_all(funs(sum))
+dim(mtx1)
+rownames(mtx1)=mtx1$ID
+mtx2 <- mtx1 %>% select(-ID)
+dim(mtx2)
+row.names(mtx2)=mtx1$ID
+mtx3 <- t(mtx2)
+mtx3[mtx3==0]=0.5
+total=apply(mtx3, 1, sum);length(total)
+y2=mtx3/total
+#apply(y2, 1, sum)
+y3=log(y2)
+
 
