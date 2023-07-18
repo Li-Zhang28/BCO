@@ -1,1 +1,10 @@
-
+### Loading packages
+library(MASS)
+library(BhGLM)
+library(brms)
+beta=rep(0,m)
+nz=c(nz,m)
+coefs=c(yy$coefs,-sum(yy$coefs))
+beta[nz]=coefs
+RP = beta!=0
+y1=as.factor(dat2$y)
